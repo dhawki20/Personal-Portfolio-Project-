@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="An analysis of NFL field-goal percentage and team winning percentage in 2025."><title>NFL Field Goals and Winning | Dominick Hawkins</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><nav class="nav" aria-label="Main navigation"><a class="brand" href="index.html">Dominick Hawkins</a><div class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a aria-current="page" href="project.html">NFL Project</a><a href="resume/Dominick_Hawkins_Resume.pdf">Resume</a><a href="https://www.linkedin.com/in/nick-hawkins-895718433" rel="noopener">LinkedIn</a></div></nav></header>
+<main id="content">
+  <section class="section">
+    <div class="eyebrow">Project one · Exploratory data analysis</div>
+    <h1 style="color:#10233f;font-size:clamp(2.4rem,6vw,4rem)">Did better field-goal accuracy lead to more wins?</h1>
+    <p class="project-lead"><strong>Research question:</strong> What was the relationship between field-goal percentage and team winning percentage during the 2025 NFL regular season?</p>
+    <div class="card-grid">
+      <article class="card"><h3>32</h3><p>NFL teams, one row per team</p></article>
+      <article class="card"><h3>272</h3><p>completed regular-season games</p></article>
+      <article class="card"><h3>0</h3><p>missing values in analysis variables</p></article>
+    </div>
+  </section>
+
+  <section class="section"><h2>1. Problem definition</h2>
+    <p>Field goals can decide close games, so it is reasonable to ask whether accurate kicking is connected to team success across a full season. The answer matters to coaches, front offices, players, and fans evaluating how special-teams performance fits into winning football.</p>
+    <p>I expected a positive relationship, but this is an observational team-level analysis. It measures association, not whether field-goal accuracy causes teams to win.</p>
+  </section>
+
+  <section class="section"><h2>2. Data description</h2>
+    <p>I collected data through the <a href="https://nflreadpy.nflverse.com/api/load_functions/">nflreadpy load functions</a>, which provide access to nflverse team statistics and schedules. The analysis uses <code>load_team_stats(2025, summary_level="reg")</code> for team kicking totals and <code>load_schedules(2025)</code> for game results. Cached copies from the official <a href="https://github.com/nflverse/nflverse-data/releases">nflverse-data releases</a> are included so the notebook remains reproducible.</p>
+    <p>The unit of analysis is an NFL team in the 2025 regular season. After filtering and joining, the dataset contains 32 rows and 13 analysis columns. Every team played 17 games. There were no missing values in the selected analysis variables.</p>
+    <div class="data-table-wrap"><table>
+      <thead><tr><th>Variable</th><th>Concept</th><th>Operational definition</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>field_goal_percentage</code></td><td>Team field-goal accuracy</td><td>Field goals made divided by attempts</td><td>Explanatory variable</td></tr>
+        <tr><td><code>winning_percentage</code></td><td>Team season success</td><td>(Wins + 0.5 × ties) divided by 17 games</td><td>Outcome variable</td></tr>
+        <tr><td><code>fg_made</code>, <code>fg_att</code></td><td>Kicking volume</td><td>Regular-season team makes and attempts</td><td>Build and verify FG%</td></tr>
+        <tr><td><code>wins</code>, <code>losses</code>, <code>ties</code></td><td>Team record</td><td>Calculated from home and away final scores</td><td>Build winning%</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="section"><h2>3. Data cleaning and preparation</h2>
+    <ol>
+      <li>Filtered the schedule to <code>season == 2025</code>, <code>game_type == "REG"</code>, and games with final home and away scores.</li>
+      <li>Reshaped each game into one record for the home team and one for the away team, then assigned a win, loss, or tie from the final score.</li>
+      <li>Grouped the game-level records by team and calculated winning percentage. A tie counts as half a win, matching the NFL standings convention.</li>
+      <li>Selected team kicking totals and independently recalculated field-goal percentage as makes divided by attempts.</li>
+      <li>Joined records and kicking data by team abbreviation and validated a one-to-one match for all 32 teams.</li>
+      <li>Checked for duplicate teams, missing analysis values, 17 games per team, and consistent league win totals.</li>
+    </ol>
+    <p>I retained all teams rather than deleting apparent outliers because each is a real part of the league-wide question. See the <a href="notebooks/nfl_field_goal_analysis.ipynb">complete notebook</a>, <a href="scripts/build_analysis.py">analysis script</a>, and <a href="data/processed/nfl_2025_field_goal_team_analysis.csv">cleaned data</a>.</p>
+  </section>
+
+  <section class="section"><h2>4. Visualizations and insights</h2>
+    <figure class="chart"><img src="assets/fg_pct_vs_win_pct.png" alt="Scatter plot showing a weak positive relationship between team field-goal percentage and winning percentage."><figcaption>Each point is one NFL team. The fitted line slopes slightly upward, but the points are widely scattered. Pearson's correlation was <strong>r = 0.14</strong> with <strong>p = 0.44</strong>; the line explained about <strong>2.0%</strong> of variation in winning percentage.</figcaption></figure>
+    <figure class="chart"><img src="assets/team_fg_pct_ranking.png" alt="Horizontal ranking of all NFL teams by 2025 field-goal percentage, colored by winning percentage."><figcaption>The Jets led field-goal percentage at 96.6% but finished 3-14. Denver finished 14-3 with an 87.5% field-goal rate. The color pattern does not steadily improve from the bottom to the top of the accuracy ranking.</figcaption></figure>
+  </section>
+
+  <section class="section"><h2>5. Storytelling and conclusion</h2>
+    <p>The 2025 season does not provide strong evidence that teams with higher field-goal percentages won more games. The Pearson correlation was positive but weak, and the p-value was well above 0.05. A rank-based check produced the same basic conclusion (Spearman's ρ = 0.13, p = 0.49).</p>
+    <p>The Jets illustrate why the relationship is weak: they made 28 of 29 attempts, the league's highest percentage, yet won only three games. Accurate kicking can still matter in a specific close game, but team wins also depend on offense, defense, turnovers, injuries, opponent strength, coaching decisions, and how often a team attempts field goals.</p>
+    <p><strong>Answer:</strong> Better field-goal percentage was associated with only a slight increase in winning percentage, and the observed relationship was not statistically significant. It would be incorrect to conclude that field-goal accuracy had no value or that it caused the small difference in team records.</p>
+  </section>
+
+  <section class="section"><h2>6. Limitations, ethics, and reflection</h2>
+    <ul>
+      <li><strong>Small sample:</strong> There are only 32 team observations, limiting statistical power.</li>
+      <li><strong>Unequal opportunity:</strong> Teams attempted different numbers and distances of field goals. Raw percentage treats a short attempt and a long attempt equally.</li>
+      <li><strong>Missing context:</strong> Team totals do not capture weather, stadium, pressure, blocks, score situation, kicker changes, or opponent quality. Prior research shows why attempt difficulty and shrinkage matter when evaluating kickers.</li>
+      <li><strong>Aggregation:</strong> A season-level correlation can hide game-level effects. This is an ecological analysis and should not be used to judge an individual kicker.</li>
+      <li><strong>Temporal scope:</strong> One season may not represent other eras or seasons; rule changes and league-wide improvements can create historical temporal bias.</li>
+      <li><strong>Ethics:</strong> The data describe public professional-sports performance, not private personal information. Still, responsible reporting requires avoiding causal or personnel claims the data cannot support.</li>
+    </ul>
+    <p>With more time, I would model every attempt using distance, weather, stadium, win probability, and game situation, then compare actual makes with expected field goals.</p>
+  </section>
+
+  <section class="section"><h2>7. Code and transparency</h2>
+    <p>The code, raw-source snapshots, cleaned dataset, and charts are available in the <a href="https://github.com/dhawki20/Personal-Portfolio-Project-">public GitHub repository</a>. The workflow is designed so another person can reproduce the analysis.</p>
+    <p><strong>AI usage disclosure:</strong> OpenAI ChatGPT with Codex (GPT-5 family), accessed September 12, 2026, was used to help organize the project, draft and debug Python/HTML/CSS code, and revise explanatory writing. I reviewed the calculations, source documentation, cleaning decisions, visualizations, and conclusions and remain responsible for the submitted work. AI was not used as a data source.</p>
+  </section>
+
+  <section class="section"><h2>References</h2>
+    <ol class="citation-list">
+      <li>Berry, S. M., &amp; Wood, C. (2004). The cold-foot effect. <em>Chance, 17</em>(4), 47-51. <a href="https://doi.org/10.1080/09332480.2004.10554926">https://doi.org/10.1080/09332480.2004.10554926</a></li>
+      <li>Osborne, J. A., &amp; Levine, R. A. (2017). Shrinkage estimation of NFL field goal success probabilities. <em>Journal of Sports Analytics, 3</em>(2), 129-146. <a href="https://doi.org/10.3233/JSA-16140">https://doi.org/10.3233/JSA-16140</a></li>
+      <li>Pasteur, R. D., &amp; Cunningham-Rhoads, K. (2014). An expectation-based metric for NFL field goal kickers. <em>Journal of Quantitative Analysis in Sports, 10</em>(1), 49-66. <a href="https://doi.org/10.1515/jqas-2013-0039">https://doi.org/10.1515/jqas-2013-0039</a></li>
+    </ol>
+    <h3>Data and documentation</h3>
+    <ul class="citation-list">
+      <li>nflverse. (2026). <em>nflreadpy load functions</em>. <a href="https://nflreadpy.nflverse.com/api/load_functions/">https://nflreadpy.nflverse.com/api/load_functions/</a></li>
+      <li>nflverse. (2026). <em>nflverse-data releases</em>. <a href="https://github.com/nflverse/nflverse-data/releases">https://github.com/nflverse/nflverse-data/releases</a></li>
+    </ul>
+  </section>
+</main>
+<footer class="site-footer"><div class="footer-inner"><span>© 2026 Dominick Hawkins</span><span><a href="mailto:dhawki20@charlotte.edu">dhawki20@charlotte.edu</a> · <a href="https://github.com/dhawki20">GitHub</a></span></div></footer>
+</body></html>

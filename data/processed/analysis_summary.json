@@ -1,0 +1,18 @@
+{
+  "teams": 32,
+  "regular_season_games": 272,
+  "missing_analysis_values": 0,
+  "pearson_r": 0.1420116203686715,
+  "pearson_p": 0.43815103901086294,
+  "r_squared": 0.02016730031973567,
+  "slope": 0.46197337453287374,
+  "intercept": 0.10489951372982048,
+  "spearman_rho": 0.12638317426106863,
+  "spearman_p": 0.4906605012986714,
+  "highest_fg_team": "NYJ",
+  "highest_fg_pct": 0.9655172413793104,
+  "lowest_fg_team": "NO",
+  "lowest_fg_pct": 0.7142857142857143,
+  "highest_win_team": "DEN",
+  "highest_win_pct": 0.8235294117647058
+}
