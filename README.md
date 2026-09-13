@@ -1,4 +1,4 @@
-# Dominick Hawkins - Personal Portfolio Project
+# Nick Hawkins - Personal Portfolio Project
 
 This repository contains my DTSC 2301 professional portfolio and first end-to-end exploratory data analysis project.
 
