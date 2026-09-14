@@ -4,7 +4,7 @@ This repository contains my DTSC 2301 professional portfolio and first end-to-en
 
 ## Research question
 
-What was the relationship between field-goal percentage and team winning percentage during the 2025 NFL regular season?
+Did NFL teams that made a higher percentage of their field goals also win more games during the 2025 regular season?
 
 ## Main result
 
