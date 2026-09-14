@@ -20,7 +20,7 @@ def code(text):
 
 cells = [
     md("""# NFL Field-Goal Accuracy and Team Winning Percentage\n\n"
-       "**Research question:** What was the relationship between field-goal percentage and team winning percentage during the 2025 NFL regular season?\n\n"
+       "**Research question:** Did NFL teams that made a higher percentage of their field goals also win more games during the 2025 regular season?\n\n"
        "This notebook collects team kicking statistics and schedules, creates one analysis row per NFL team, documents the cleaning process, and evaluates the relationship with visualizations and correlation. This is an exploratory observational analysis; it cannot establish causation."""),
     md("""## 1. Setup and data collection\n\n"
        "The primary collection method uses [`nflreadpy`](https://nflreadpy.nflverse.com/api/load_functions/): `load_team_stats` supplies regular-season team totals and `load_schedules` supplies final scores. The repository includes cached official nflverse CSV releases as a transparent fallback, so the work can still run if the package or network is unavailable."""),
