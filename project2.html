@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Nick Hawkins' machine-learning project predicting MLB World Series winners from regular-season statistics.">
+  <title>Predicting World Series Winners | Nick Hawkins</title>
+  <link rel="stylesheet" href="styles.css?v=projects-2">
+</head>
+<body>
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><nav class="nav" aria-label="Main navigation">
+  <a class="brand" href="index.html">Nick Hawkins</a>
+  <div class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="project.html">Project 1</a><a aria-current="page" href="project2.html">Project 2</a><a href="blog.html">Blog Posts</a><a href="resume/Dominick_Hawkins_Resume.pdf">Resume</a><a href="https://www.linkedin.com/in/nick-hawkins-895718433" rel="noopener">LinkedIn</a></div>
+</nav></header>
+<main id="content">
+  <section class="section">
+    <div class="eyebrow">Project two · Machine-learning classification</div>
+    <h1 style="color:#10233f;font-size:clamp(2.4rem,6vw,4rem)">Predicting MLB World Series Winners</h1>
+    <p class="project-lead"><strong>Research question:</strong> How accurately can an MLB playoff team's regular-season win percentage and performance statistics predict whether it will win the World Series, using data from the 2005–2024 MLB seasons?</p>
+    <div class="button-row">
+      <a class="button" href="https://dhawki20.github.io/Project2Oct.4/">View the full project</a>
+      <a class="button" href="https://github.com/dhawki20/Project2Oct.4/blob/main/notebooks/world_series_prediction.ipynb">Jupyter Notebook</a>
+      <a class="button" href="https://github.com/dhawki20/Project2Oct.4">GitHub code</a>
+    </div>
+    <div class="card-grid">
+      <article class="card"><h3>198</h3><p>MLB playoff team-seasons</p></article>
+      <article class="card"><h3>20</h3><p>World Series winners</p></article>
+      <article class="card"><h3>2005–2024</h3><p>Twenty completed MLB seasons</p></article>
+    </div>
+  </section>
+
+  <section class="section"><h2>Problem and data</h2>
+    <p>This is a binary-classification project. The target, <code>world_series_winner</code>, equals 1 for the champion and 0 for every other playoff team. Each row represents one playoff team in one season.</p>
+    <p>The data come from the Teams table in Sean Lahman's Baseball Database. The selected features are win percentage, run differential per game, runs per game, OPS, home runs per game, stolen bases per game, ERA, and WHIP.</p>
+    <p><a href="https://github.com/dhawki20/Project2Oct.4/blob/main/data/mlb_playoff_teams_2005_2024.csv">Open the cleaned modeling dataset</a>.</p>
+  </section>
+
+  <section class="section"><h2>Preparation and modeling</h2>
+    <p>I removed duplicate team-season records, filtered to playoff teams, created comparable rate statistics, calculated OPS and WHIP, and excluded postseason results from the predictors to avoid data leakage.</p>
+    <p>The chronological split trains on 2005–2019 and tests on 2020–2024. I compared a best-win-percentage baseline with logistic regression and random forest classification.</p>
+  </section>
+
+  <section class="section"><h2>Results and interpretation</h2>
+    <div class="card-grid">
+      <article class="card"><h3>Baseline</h3><p>Correctly selected 2 of 5 holdout champions.</p></article>
+      <article class="card"><h3>Logistic regression</h3><p>Selected 1 of 5 and produced the best ROC-AUC at 0.691.</p></article>
+      <article class="card"><h3>Random forest</h3><p>Selected 0 of 5 champions in the holdout seasons.</p></article>
+    </div>
+    <p>The main conclusion is that regular-season strength contains useful signal, but added model complexity did not outperform the simple best-record baseline when selecting one champion per season.</p>
+    <p><a class="button" href="https://dhawki20.github.io/Project2Oct.4/#results">View all visualizations and metrics</a></p>
+  </section>
+
+  <section class="section"><h2>Limitations and ethics</h2>
+    <ul>
+      <li>Twenty seasons contain only 20 champions, creating a small and imbalanced positive class.</li>
+      <li>The shortened 2020 season and changing playoff formats limit comparability.</li>
+      <li>Regular-season totals omit injuries, roster changes, playoff matchups, and starting-pitcher availability.</li>
+      <li>The results show associations, not causes, and should not be used as gambling advice.</li>
+    </ul>
+  </section>
+
+  <section class="section"><h2>Code, sources, and AI transparency</h2>
+    <p>The complete notebook, Python script, raw data, cleaned data, model results, and visualizations are available in the <a href="https://github.com/dhawki20/Project2Oct.4">public Project 2 repository</a>. The <a href="https://dhawki20.github.io/Project2Oct.4/#project">full published analysis</a> includes the data sources, supporting references, model interpretation, ethics discussion, and reflection.</p>
+    <p><strong>AI usage disclosure:</strong> OpenAI ChatGPT with Codex (GPT-5 family), accessed September 2026, assisted with code organization, debugging, explanatory drafting, and website formatting. I selected the topic, reviewed the analysis, and remain responsible for verifying and explaining the work. AI was not used as a data source.</p>
+  </section>
+</main>
+<footer class="site-footer"><div class="footer-inner"><span>© 2026 Nick Hawkins</span><span><a href="mailto:dhawki20@charlotte.edu">dhawki20@charlotte.edu</a> · <a href="https://github.com/dhawki20/Project2Oct.4">Project 2 GitHub</a></span></div></footer>
+</body></html>
